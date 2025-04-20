@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ImportController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\ScheduleController;
 
 /*
@@ -25,5 +27,13 @@ Route::get('/student', function () {
 Route::get('/template', function () {
     return view('schedTemplate');
 });
-
+Route::get('/profile', function () {
+    return view('profile');
+});
 Route::post('/student', [ScheduleController::class, 'generatePDF'])->name('generate.memo.pdf');
+Route::post('/import', [ImportController::class, 'import'])->name('import');
+Route::post('/registration', [StudentController::class, 'store'])->name('register');
+
+
+Route::get('/student', [ImportController::class, 'show']);
+Route::get('/registration', [ImportController::class, 'showUnregistered']);

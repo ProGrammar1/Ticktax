@@ -74,7 +74,7 @@
                 <div class="row mb-4 mt-4 align-items-center justify-content-between">
                     <!-- CSV Upload Left -->
                     <div class="col-md-6 d-flex">
-                        <form id="csvForm" action="" method="post" enctype="multipart/form-data"
+                        <form id="csvForm" action="{{ route('import') }}" method="post" enctype="multipart/form-data"
                             class="d-flex align-items-center flex-wrap" style="gap: 8px; max-width: 400px;" onsubmit="return validateCSV();">
                             @csrf
                             <div class="form-text text-muted me-2">
@@ -101,27 +101,48 @@
                     <h5 class="mb-3 fw-bold" style="color: #5CE1E6;">Student List</h5>
 
                     <!-- Displaying students list -->
-                    <table id="studentTable" class="table table-bordered table-striped mt-3">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Student ID</th>
-                                <th>Name</th>
-                                <th>Gender</th>
-                                <th>Course</th>
-                                <th>Year</th>
-                                <th>Units</th>
-                                <th>Section</th>
-                                <th>Contact Number</th>
-                                <th>Birth Date</th>
-                                <th>Address</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Data will be dynamically filled from the database -->
-                        </tbody>
-                    </table>
+                    @if($students->isEmpty())
+                            <p>No students found.</p>
+                        @else
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Student ID</th>
+                                        <th>Name</th>
+                                        <th>Gender</th>
+                                        <th>Course</th>
+                                        <th>Year</th>
+                                        <th>Units</th>
+                                        <th>Section</th>
+                                        <th>Contact Number</th>
+                                        <th>Birth Date</th>
+                                        <th>Address</th>
+
+                                        <!-- Add other columns as needed -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($students as $student)
+                                        <tr>
+                                            <td>{{ $student->no }}</td>
+                                            <td>{{ $student->id_number }}</td>
+                                            <td>{{ $student->name }}</td>
+                                            <td>{{ $student->gender }}</td>
+                                            <td>{{ $student->course }}</td>
+                                            <td>{{ $student->year }}</td>
+                                            <td>{{ $student->units }}</td>
+                                            <td>{{ $student->section }}</td>
+                                            <td>{{ $student->contact_no }}</td>
+                                            <td>{{ $student->birth_date }}</td>
+                                            <td>{{ $student->address }}</td>
+
+                                            <!-- Add other columns as needed -->
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        @endif
 
                     <!-- Pagination -->
                     <div class="d-flex justify-content-end mt-3">
@@ -244,6 +265,8 @@
     </div>
   </div>
 </div>
+
+
     </div>
 </main>
 
@@ -252,9 +275,18 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" 
     integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+    </script>
+    
+    
 </body>
 
+
+
+
+
 <script>
+   
 document.getElementById('generateScheduleForm').addEventListener('submit', function(e) {
     e.preventDefault(); // Prevent default form submit (remove this if you want to still submit server-side)
 
@@ -273,6 +305,27 @@ document.getElementById('generateScheduleForm').addEventListener('submit', funct
       this.submit();
     }, 1500); // Delay submit so user sees the success modal first
 });
+
+
+function validateCSV() {
+            const fileInput = document.querySelector('input[type="file"]');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                redirectWithError("CSV file is required");
+                return false;
+            }
+
+            const fileName = file.name.toLowerCase();
+            if (!fileName.endsWith('.csv')) {
+                redirectWithError("Only CSV files are allowed");
+                return false;
+            }
+
+            return true;
+        }
+
+        
 </script>
 
 </html>

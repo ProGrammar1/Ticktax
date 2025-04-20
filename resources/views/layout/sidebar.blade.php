@@ -42,8 +42,8 @@
                 </li>
 
                 <li>
-                    <a href="#" class="mb-2 nav-link px-3 text-white d-flex align-items-center">
-                        <img src="{{ asset('images/student_ico.png') }}" alt="Students" class="sidebar-icon">
+                <a href="{{ url('student') }}" class="nav-link px-3 text-white d-flex align-items-center {{ request()->is('student') ? 'active-link' : '' }}">
+                        <img src="{{ asset('images/user_prof.png') }}" alt="Profile" class="sidebar-icon">
                         <span>Students</span>
                     </a>
                 </li>
@@ -56,8 +56,8 @@
                 </li>
 
                 <li>
-                    <a href="#" class="mb-2 nav-link px-3 text-white d-flex align-items-center">
-                        <img src="{{ asset('images/reg_ico.png') }}" alt="Registration" class="sidebar-icon">
+                <a href="{{ url('registration') }}" class="nav-link px-3 text-white d-flex align-items-center {{ request()->is('registration') ? 'active-link' : '' }}">
+                        <img src="{{ asset('images/user_prof.png') }}" alt="Profile" class="sidebar-icon">
                         <span>Registration</span>
                     </a>
                 </li>
